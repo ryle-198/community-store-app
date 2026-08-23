@@ -1,10 +1,20 @@
+import { AuthProvider } from "@/src/contexts/AuthContext";
+import { CartProvider } from "@/src/contexts/CartContext";
+import { colors } from "@/src/theme/colors";
 import { Slot } from "expo-router";
-import { AuthProvider } from "../src/contexts/AuthContext";
+import { StatusBar } from "expo-status-bar";
 
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <Slot />
+      <CartProvider>
+        <StatusBar
+          style="light"
+          backgroundColor={colors.teal}
+          translucent={false}
+        />
+        <Slot />
+      </CartProvider>
     </AuthProvider>
   );
 }

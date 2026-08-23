@@ -1,4 +1,2 @@
-import PlaceholderScreen from "../../src/components/PlaceholderScreen";
-export default function Screen() {
-  return <PlaceholderScreen title="checkout" />;
-}
+export { default } from "@/src/screens/student/CheckoutScreen";
+

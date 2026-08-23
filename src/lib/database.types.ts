@@ -33,6 +33,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["student"]["Insert"]>;
+        Relationships: [];
       };
       faculty_member: {
         Row: {
@@ -56,6 +57,7 @@ export interface Database {
         Update: Partial<
           Database["public"]["Tables"]["faculty_member"]["Insert"]
         >;
+        Relationships: [];
       };
       vendor: {
         Row: {
@@ -77,6 +79,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["vendor"]["Insert"]>;
+        Relationships: [];
       };
       item: {
         Row: {
@@ -87,6 +90,14 @@ export interface Database {
           image_url: string | null;
           price: number;
           available: boolean;
+          category:
+            | "books"
+            | "electronics"
+            | "household"
+            | "fashion"
+            | "leisure"
+            | null;
+          tag: string | null;
           created_at: string;
         };
         Insert: {
@@ -97,9 +108,18 @@ export interface Database {
           image_url?: string | null;
           price: number;
           available?: boolean;
+          category?:
+            | "books"
+            | "electronics"
+            | "household"
+            | "fashion"
+            | "leisure"
+            | null;
+          tag?: string | null;
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["item"]["Insert"]>;
+        Relationships: [];
       };
       orders: {
         Row: {
@@ -113,6 +133,11 @@ export interface Database {
             | "completed"
             | "cancelled";
           total_price: number;
+          delivery_name: string | null;
+          delivery_address: string | null;
+          delivery_city: string | null;
+          delivery_zip: string | null;
+          payment_method: "collection" | "card" | null;
           created_at: string;
         };
         Insert: {
@@ -126,9 +151,15 @@ export interface Database {
             | "completed"
             | "cancelled";
           total_price?: number;
+          delivery_name?: string | null;
+          delivery_address?: string | null;
+          delivery_city?: string | null;
+          delivery_zip?: string | null;
+          payment_method?: "collection" | "card" | null;
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["orders"]["Insert"]>;
+        Relationships: [];
       };
       order_item: {
         Row: {
@@ -144,6 +175,7 @@ export interface Database {
           price_at_purchase: number;
         };
         Update: Partial<Database["public"]["Tables"]["order_item"]["Insert"]>;
+        Relationships: [];
       };
       payment: {
         Row: {
@@ -165,6 +197,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["payment"]["Insert"]>;
+        Relationships: [];
       };
       review: {
         Row: {
@@ -184,6 +217,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["review"]["Insert"]>;
+        Relationships: [];
       };
       post: {
         Row: {
@@ -201,6 +235,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["post"]["Insert"]>;
+        Relationships: [];
       };
       notification: {
         Row: {
@@ -220,10 +255,42 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["notification"]["Insert"]>;
+        Relationships: [];
       };
     };
-    Views: Record<string, never>;
+    Views: {
+      item_with_rating: {
+        Row: Database["public"]["Tables"]["item"]["Row"] & {
+          category:
+            | "books"
+            | "electronics"
+            | "household"
+            | "fashion"
+            | "leisure"
+            | null;
+          tag: string | null;
+          avg_rating: number;
+          review_count: number;
+        };
+        Relationships: [];
+      };
+      vendor_with_rating: {
+        Row: Database["public"]["Tables"]["vendor"]["Row"] & {
+          avg_rating: number;
+          review_count: number;
+        };
+        Relationships: [];
+      };
+      post_with_author: {
+        Row: Database["public"]["Tables"]["post"]["Row"] & {
+          author_first_name: string;
+          author_last_name: string;
+        };
+        Relationships: [];
+      };
+    };
     Functions: Record<string, never>;
     Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
 }
