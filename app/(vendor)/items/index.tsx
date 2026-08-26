@@ -1,4 +1,5 @@
-import PlaceholderScreen from "../../../src/components/PlaceholderScreen";
-export default function Screen() {
-  return <PlaceholderScreen title="indec" />;
+import ManageItemsScreen from "@/src/screens/vendor/ManageItemsScreen";
+
+export default function VendorItemsRoute() {
+  return <ManageItemsScreen />;
 }

@@ -1,5 +1,5 @@
 import ItemFormScreen from "@/src/screens/vendor/ItemFormScreen";
 
-export default function EditItemRoute() {
+export default function NewItemRoute() {
   return <ItemFormScreen />;
 }
