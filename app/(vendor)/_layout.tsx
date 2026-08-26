@@ -1,5 +1,7 @@
+import { useAuthContext } from "@/src/contexts/AuthContext";
+import { colors } from "@/src/theme/colors";
+import { Ionicons } from "@expo/vector-icons";
 import { Redirect, Tabs } from "expo-router";
-import { useAuthContext } from "../../src/contexts/AuthContext";
 
 export default function VendorLayout() {
   const { session, role, loading } = useAuthContext();
@@ -9,14 +11,52 @@ export default function VendorLayout() {
   if (role !== "vendor") return <Redirect href="/" />;
 
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
-      <Tabs.Screen name="dashboard" options={{ title: "Dashboard" }} />
-      {/* NOTE: this matches your current tree (orders.tsx/profile.tsx nested
-          under items/). If that nesting was accidental, move them up to sit
-          directly under (vendor)/ — see the note below. */}
-      <Tabs.Screen name="items/index" options={{ title: "Items" }} />
-      <Tabs.Screen name="items/orders" options={{ title: "Orders" }} />
-      <Tabs.Screen name="items/profile" options={{ title: "Profile" }} />
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: colors.teal,
+        tabBarInactiveTintColor: colors.muted,
+        tabBarStyle: { borderTopColor: colors.border },
+        tabBarLabelStyle: { fontSize: 11, fontWeight: "600" },
+      }}
+    >
+      <Tabs.Screen
+        name="dashboard"
+        options={{
+          title: "Dashboard",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="grid-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="items/index"
+        options={{
+          title: "Items",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="pricetags-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="orders"
+        options={{
+          title: "Orders",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="receipt-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      {/* pushed screen, not a tab */}
       <Tabs.Screen name="items/[id]" options={{ href: null }} />
     </Tabs>
   );
