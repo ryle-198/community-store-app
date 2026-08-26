@@ -31,7 +31,47 @@ export type OrderWithItems = {
   }[];
 };
 
+export type VendorOrderLine = {
+  order_id: string;
+  status: OrderWithItems["status"];
+  created_at: string;
+  quantity: number;
+  price_at_purchase: number;
+  item_name: string;
+};
+
 export const orderService = {
+  async updateStatus(
+    orderId: string,
+    status: VendorOrderLine["status"],
+  ): Promise<void> {
+    const { error } = await supabase
+      .from("orders")
+      .update({ status })
+      .eq("order_id", orderId);
+    if (error) throw error;
+  },
+
+  async getVendorOrderLines(vendorId: string): Promise<VendorOrderLine[]> {
+    const { data, error } = await supabase
+      .from("order_item")
+      .select(
+        "quantity, price_at_purchase, item!inner(item_name, vendor_id), orders!inner(order_id, status, created_at)",
+      )
+      .eq("item.vendor_id", vendorId);
+
+    if (error) throw error;
+
+    return (data ?? []).map((row: any) => ({
+      order_id: row.orders.order_id,
+      status: row.orders.status,
+      created_at: row.orders.created_at,
+      quantity: row.quantity,
+      price_at_purchase: row.price_at_purchase,
+      item_name: row.item.item_name,
+    }));
+  },
+
   async getStudentOrders(studentId: string): Promise<OrderWithItems[]> {
     const { data, error } = await supabase
       .from("orders")
