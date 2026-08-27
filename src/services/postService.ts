@@ -22,6 +22,17 @@ export const postService = {
     return (data ?? []) as PostWithAuthor[];
   },
 
+  async getByAuthor(authorId: string): Promise<PostWithAuthor[]> {
+    const { data, error } = await supabase
+      .from("post_with_author")
+      .select("*")
+      .eq("author_id", authorId)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    return (data ?? []) as PostWithAuthor[];
+  },
+
   async getAll(): Promise<PostWithAuthor[]> {
     const { data, error } = await supabase
       .from("post_with_author")
